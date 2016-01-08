@@ -1,0 +1,24 @@
+# This is false by default. A database is required to use this plugin.
+enabled: false
+
+# This is pretty self-explanatory.
+sql:
+  username: 'username'
+  password: 'pw'
+  url: 'mysql://url:3306'
+  dbname: 'tablename'
+
+# The port needs to be that server's communication port!
+bungeeinstances:
+  - localhost:25565
+
+# communication_port is only applicable if usingMultipleBungees is true. This is the port the plugin will be listening to for communication.
+# This is NOT your main server port.
+communication_port: 25565
+
+# usingMultipleBungees must either be true or false, no quotation marks. It's self-explanatory.
+usingMultipleBungees: false
+
+# The authentication key is only used if multiple bungees is enabled.
+# Custom keys must be at least 3 characters, and need to be the same on all other Bungee instances.
+authenticationkey: no
