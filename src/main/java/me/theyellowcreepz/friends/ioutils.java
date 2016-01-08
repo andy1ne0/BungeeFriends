@@ -11,7 +11,7 @@ import java.net.SocketException;
 /**
  * All code inside this plugin is the
  * property of Andrew Petersen.
- * Decompiling, copying, or claiming any
+ * copying, or claiming any
  * code from this plugin as your own
  * voids any legal rights you have to
  * this plugin, unless express permission
