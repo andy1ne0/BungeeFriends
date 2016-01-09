@@ -90,6 +90,7 @@ public class Main extends Plugin implements Listener {
 
         getProxy().getPluginManager().registerCommand(getInstance(), new friendsmanager());
         getProxy().getPluginManager().registerCommand(getInstance(), new msg());
+        getProxy().getPluginManager().registerCommand(getInstance(), new blocksmanager());
 
         BungeeCord.getInstance().getPluginManager().registerListener(this, this);
 
@@ -97,6 +98,7 @@ public class Main extends Plugin implements Listener {
 
         if (sql.openConnection(getConfig())){
             BungeeCord.getInstance().getLogger().info("[ Friends ] Connection to database established! ");
+            sql.submitQuery("CREATE TABLE IF NOT EXISTS `blocks` (`blocker` varchar(100) NOT NULL, `blockee` varchar(100) NOT NULL, PRIMARY KEY (`blocker`)) ENGINE=InnoDB DEFAULT CHARSET=latin1");
             sql.submitQuery("CREATE TABLE IF NOT EXISTS `players` (`username` varchar(30) NOT NULL,`uuid` varchar(100) NOT NULL, PRIMARY KEY (`uuid`)) ENGINE=InnoDB DEFAULT CHARSET=latin1");
             sql.submitQuery("CREATE TABLE IF NOT EXISTS `pendingrequests` (`requested` varchar(100) NOT NULL, `requestee` varchar(100) NOT NULL, PRIMARY KEY (`requested`,`requestee`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1");
             sql.submitQuery("CREATE TABLE IF NOT EXISTS `relationships` ( `primaryuser` varchar(60) NOT NULL, `secondaryuser` varchar(60) NOT NULL, PRIMARY KEY (`primaryuser`,`secondaryuser`) ) ENGINE=InnoDB DEFAULT CHARSET=latin1");

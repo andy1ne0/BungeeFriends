@@ -31,7 +31,6 @@ public class friendsmanager extends Command {
         p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/friends add <Username> "+ChatColor.DARK_AQUA+"(Add Friends)");
         p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/friends remove <Username> "+ChatColor.DARK_AQUA+"(Delete Friends)");
         p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/friends list "+ChatColor.DARK_AQUA+"(List Friends)");
-        p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/friends add <Username> "+ChatColor.DARK_AQUA+"(Add Friends)");
         p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/friends goto <Username> "+ChatColor.DARK_AQUA+"(Teleport to your Friends)");
         p.sendMessage(ChatColor.DARK_GRAY+""+ChatColor.BOLD+">> "+ChatColor.GRAY+""+ChatColor.ITALIC+"Use /msg to send messages to your friends! ");
     }
@@ -95,6 +94,14 @@ public class friendsmanager extends Command {
 
                                 if (ifPlayerExists.next()) { // If a value was returned.
                                     String requestedUUID = ifPlayerExists.getString("uuid");
+
+                                    ResultSet isBlocked = Main.sql.getFromDB("SELECT * FROM `blocks` WHERE `blocker` LIKE '"+((ProxiedPlayer) commandSender).getUUID()+"' AND `blockee` LIKE '"+requestedUUID+"'");
+                                    ResultSet isBlocked2 = Main.sql.getFromDB("SELECT * FROM `blocks` WHERE `blocker` LIKE '"+requestedUUID+"' AND `blockee` LIKE '"+((ProxiedPlayer) commandSender).getUUID()+"'");
+
+                                    if(isBlocked.next() || isBlocked2.next()){
+                                        commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("Either you or "+strings[1]+" have blocked one another! "));
+                                        return;
+                                    }
 
                                     ResultSet results = Main.sql.getFromDB("SELECT * FROM `relationships` WHERE `primaryuser` LIKE '" + ((ProxiedPlayer) commandSender).getUUID() + "' AND `secondaryuser` LIKE '" + requestedUUID + "'");
                                     ResultSet results2 = Main.sql.getFromDB("SELECT * FROM `relationships` WHERE `primaryuser` LIKE '" + requestedUUID + "' AND `secondaryuser` LIKE '" + ((ProxiedPlayer) commandSender).getName() + "'");

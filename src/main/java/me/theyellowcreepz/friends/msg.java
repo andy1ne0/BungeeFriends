@@ -75,14 +75,24 @@ public class msg extends Command{
                                 msg.append(s+" ");
                             }
 
+                            ResultSet playerExistence = Main.sql.getFromDB("SELECT * FROM `players` WHERE `username` LIKE '"+strings[0]+"'");
+                            playerExistence.next();
+                            String uuid = playerExistence.getString("uuid");
+                            if(uuid.length() <= 2){
+                                return;
+                            }
+
+                            ResultSet isBlocked = Main.sql.getFromDB("SELECT * FROM `blocks` WHERE `blocker` LIKE '"+((ProxiedPlayer) commandSender).getUUID()+"' AND `blockee` LIKE '"+uuid+"'");
+                            ResultSet isBlocked2 = Main.sql.getFromDB("SELECT * FROM `blocks` WHERE `blocker` LIKE '"+uuid+"' AND `blockee` LIKE '"+((ProxiedPlayer) commandSender).getUUID()+"'");
+
+                            if(isBlocked.next() || isBlocked2.next()){
+                                commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("Either you or "+strings[0]+" have blocked one another! "));
+                                return;
+                            }
+
                             if(BungeeCord.getInstance().getPlayer(strings[0]) != null){
 
-                                ResultSet playerExistence = Main.sql.getFromDB("SELECT * FROM `players` WHERE `username` LIKE '"+strings[0]+"'");
-                                playerExistence.next();
-                                String uuid = playerExistence.getString("uuid");
-                                if(uuid.length() <= 2){
-                                    return;
-                                }
+
 
                                 if(BungeeCord.getInstance().getPlayer(strings[0]).getServer().getInfo().getName() == ((ProxiedPlayer) commandSender).getServer().getInfo().getName()) {
 
