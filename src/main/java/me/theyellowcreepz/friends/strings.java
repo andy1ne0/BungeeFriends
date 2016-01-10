@@ -44,4 +44,6 @@ public class strings {
         return (ChatColor.GOLD+""+ChatColor.BOLD+"["+ChatColor.YELLOW+">>"+ChatColor.GOLD+ChatColor.BOLD+"] "+ChatColor.GOLD+msg);
     }
 
+    // 【 】➤╔╚║▂▃▅▆▇═
+
 }

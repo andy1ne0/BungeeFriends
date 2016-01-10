@@ -25,12 +25,15 @@ public class blocksmanager extends Command {
     }
 
     public void sendBlockHelp(ProxiedPlayer p){
-        p.sendMessage(ChatColor.AQUA+""+ChatColor.BOLD+"----------["+ChatColor.GOLD+"Blocks Guide"+ ChatColor.AQUA+""+ChatColor.BOLD+"]----------");
-        p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/blocks help "+ChatColor.DARK_AQUA+"(This Guide)");
-        p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/blocks add <Username> "+ChatColor.DARK_AQUA+"(Add Blocks)");
-        p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/blocks remove <Username> "+ChatColor.DARK_AQUA+"(Delete Blocks)");
-        p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/blocks list "+ChatColor.DARK_AQUA+"(List Blocks)");
-        p.sendMessage(ChatColor.DARK_GRAY+""+ChatColor.BOLD+">> "+ChatColor.GRAY+""+ChatColor.ITALIC+"Blocked players cannot /msg you, and cannot send friend requests to you. ");
+        p.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"╔═══════════["+ChatColor.GOLD+"Blocks Guide"+ ChatColor.DARK_RED+""+ChatColor.BOLD+"]════════════");
+        p.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"║ "+ChatColor.YELLOW+""+ChatColor.BOLD+"/blocks help "+ChatColor.DARK_AQUA+"【This Guide】");
+        p.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"║ "+ChatColor.YELLOW+""+ChatColor.BOLD+"/blocks add <Username> "+ChatColor.DARK_AQUA+"【Add Blocks】");
+        p.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"║ "+ChatColor.YELLOW+""+ChatColor.BOLD+"/blocks remove <Username> "+ChatColor.DARK_AQUA+"【Delete Blocks】");
+        p.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"║ "+ChatColor.YELLOW+""+ChatColor.BOLD+"/blocks list "+ChatColor.DARK_AQUA+"【List Blocks】");
+        p.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"║ "+ChatColor.DARK_GRAY+""+ChatColor.BOLD+">> "+ChatColor.GRAY+""+ChatColor.ITALIC+"Blocked players cannot: ");
+        p.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"║ "+ChatColor.DARK_GRAY+""+ChatColor.BOLD+"     ➤ "+ChatColor.GRAY+""+ChatColor.ITALIC+"/msg you. ");
+        p.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"║ "+ChatColor.DARK_GRAY+""+ChatColor.BOLD+"     ➤ "+ChatColor.GRAY+""+ChatColor.ITALIC+"Send friend requests to you. ");
+        p.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"╚══════════════════════════════");
     }
 
     @Override
@@ -69,10 +72,18 @@ public class blocksmanager extends Command {
                         blocks.add(getPlayerName.getString("username"));
                     }
 
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.informationMessage("You have "+ChatColor.GOLD+blockcount+ChatColor.AQUA+" blocks: "));
-                    for(String s : blocks){
-                        commandSender.sendMessage(ChatColor.GOLD+">> "+ChatColor.AQUA+s);
+                    if(blockcount == 0){
+                        commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("You don't have anyone blocked! "));
+                        commandSender.sendMessage(me.theyellowcreepz.friends.strings.subInfoMSG("Use /blocks add to block people. "));
+                        return;
                     }
+
+                    commandSender.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"╔══════════════════════════════");
+                    commandSender.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"║ "+me.theyellowcreepz.friends.strings.informationMessage("You have "+ChatColor.GOLD+blockcount+ChatColor.AQUA+" blocked players: "));
+                    for(String s : blocks){
+                        commandSender.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"║ "+ChatColor.GOLD+"➤ "+ChatColor.AQUA+s);
+                    }
+                    commandSender.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"╚══════════════════════════════");
                     return;
 
                 } catch (SQLException e){

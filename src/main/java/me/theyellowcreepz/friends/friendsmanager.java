@@ -26,13 +26,14 @@ public class friendsmanager extends Command {
     }
 
     public void sendHelpMessages(ProxiedPlayer p){
-        p.sendMessage(ChatColor.AQUA+""+ChatColor.BOLD+"----------["+ChatColor.GOLD+"Friends Guide"+ ChatColor.AQUA+""+ChatColor.BOLD+"]----------");
-        p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/friends help "+ChatColor.DARK_AQUA+"(This Guide)");
-        p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/friends add <Username> "+ChatColor.DARK_AQUA+"(Add Friends)");
-        p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/friends remove <Username> "+ChatColor.DARK_AQUA+"(Delete Friends)");
-        p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/friends list "+ChatColor.DARK_AQUA+"(List Friends)");
-        p.sendMessage(ChatColor.YELLOW+""+ChatColor.BOLD+"/friends goto <Username> "+ChatColor.DARK_AQUA+"(Teleport to your Friends)");
-        p.sendMessage(ChatColor.DARK_GRAY+""+ChatColor.BOLD+">> "+ChatColor.GRAY+""+ChatColor.ITALIC+"Use /msg to send messages to your friends! ");
+        p.sendMessage(ChatColor.AQUA+""+ChatColor.BOLD+"╔═══════════["+ChatColor.GOLD+"Friends Guide"+ ChatColor.AQUA+""+ChatColor.BOLD+"]═══════════");
+        p.sendMessage(ChatColor.AQUA+""+ChatColor.BOLD+"║ "+ChatColor.YELLOW+""+ChatColor.BOLD+"/friends help "+ChatColor.DARK_AQUA+"【This Guide】");
+        p.sendMessage(ChatColor.AQUA+""+ChatColor.BOLD+"║ "+ChatColor.YELLOW+""+ChatColor.BOLD+"/friends add <Username> "+ChatColor.DARK_AQUA+"【Add Friends】");
+        p.sendMessage(ChatColor.AQUA+""+ChatColor.BOLD+"║ "+ChatColor.YELLOW+""+ChatColor.BOLD+"/friends remove <Username> "+ChatColor.DARK_AQUA+"【Delete Friends】");
+        p.sendMessage(ChatColor.AQUA+""+ChatColor.BOLD+"║ "+ChatColor.YELLOW+""+ChatColor.BOLD+"/friends list "+ChatColor.DARK_AQUA+"【List Friends】");
+        p.sendMessage(ChatColor.AQUA+""+ChatColor.BOLD+"║ "+ChatColor.YELLOW+""+ChatColor.BOLD+"/friends goto <Username> "+ChatColor.DARK_AQUA+"【Teleport to your Friends】");
+        p.sendMessage(ChatColor.AQUA+""+ChatColor.BOLD+"║ "+ChatColor.DARK_GRAY+""+ChatColor.BOLD+">> "+ChatColor.GRAY+""+ChatColor.ITALIC+"Use /msg to send messages to your friends! ");
+        p.sendMessage(ChatColor.AQUA+""+ChatColor.BOLD+"╚══════════════════════════════");
     }
 
     @Override
@@ -69,10 +70,18 @@ public class friendsmanager extends Command {
                                 friends.add(getPlayerName.getString("username"));
                             }
 
-                            commandSender.sendMessage(me.theyellowcreepz.friends.strings.informationMessage("You have "+ChatColor.GOLD+friendscount+ChatColor.AQUA+" friends: "));
-                            for(String s : friends){
-                                commandSender.sendMessage(ChatColor.GOLD+">> "+ChatColor.AQUA+s);
+                            if(friendscount == 0){
+                                commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("You don't have any friends! "));
+                                commandSender.sendMessage(me.theyellowcreepz.friends.strings.subInfoMSG("Use /friends add to add friends. "));
+                                return;
                             }
+
+                            commandSender.sendMessage(ChatColor.DARK_GREEN+""+ChatColor.BOLD+"╔══════════════════════════════");
+                            commandSender.sendMessage(ChatColor.DARK_GREEN+""+ChatColor.BOLD+"║ "+me.theyellowcreepz.friends.strings.informationMessage("You have "+ChatColor.GOLD+friendscount+ChatColor.AQUA+" friends: "));
+                            for(String s : friends){
+                                commandSender.sendMessage(ChatColor.DARK_GREEN+""+ChatColor.BOLD+"║ "+ChatColor.GOLD+"➤ "+ChatColor.AQUA+s);
+                            }
+                            commandSender.sendMessage(ChatColor.DARK_GREEN+""+ChatColor.BOLD+"╚══════════════════════════════");
                             return;
 
                         } catch (SQLException e){
