@@ -119,9 +119,9 @@ public class friendsmanager extends Command {
                                     if (!results.next() && !results2.next()) {
                                         // if no relations exist
 
-                                        ResultSet hasRequested = Main.sql.getFromDB("SELECT * FROM `pendingrequests` WHERE `requested` LIKE '" + requestedUUID + "' AND `requestee` LIKE '" + commandSender.getName() + "'");
+                                        ResultSet hasRequested = Main.sql.getFromDB("SELECT * FROM `pendingrequests` WHERE `requested` LIKE '" + requestedUUID + "' AND `requestee` LIKE '" + ((ProxiedPlayer) commandSender).getUUID() + "'");
 
-                                        ResultSet isAccepting = Main.sql.getFromDB("SELECT * FROM `pendingrequests` WHERE `requested` LIKE '" + commandSender.getName() + "' AND `requestee` LIKE '" + requestedUUID + "'");
+                                        ResultSet isAccepting = Main.sql.getFromDB("SELECT * FROM `pendingrequests` WHERE `requested` LIKE '" + ((ProxiedPlayer) commandSender).getUUID()+ "' AND `requestee` LIKE '" + requestedUUID + "'");
 
                                         if (hasRequested.next()) {
                                             // if they've already sent a request
