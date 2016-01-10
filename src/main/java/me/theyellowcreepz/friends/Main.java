@@ -34,25 +34,20 @@ public class Main extends Plugin implements Listener {
 
     public static HashMap<Integer, String> messageIDsEncoded = new HashMap<>();
     public static HashMap<Integer, String> locatePlayerEncoded = new HashMap<>();
-
     public static HashMap<Integer, friendJoinObj> friendJoinTemp = new HashMap<>();
     public static HashMap<Integer, friendLeaveObj> friendLeaveTemp = new HashMap<>();
-
     File file;
     private static Configuration config;
     private static Plugin Main;
     public static ServerSocket ioSock;
     public static ArrayList<InetSocketAddress> otherServers = new ArrayList<>();
     public static String pluginAuthenticationString = "27591Thsefinaa6786785fsefguysgfhkshfbelruh";
-
     public static sqlmanager sql = null;
-
     public static int connectionsInLast5minutes = 0;
     public static int outgoingconnectionsInLast5minutes = 0;
 
     @Override
     public void onEnable(){
-
         try {
             if(!getDataFolder().exists()) {
                 if(!getDataFolder().mkdir()){
@@ -91,9 +86,7 @@ public class Main extends Plugin implements Listener {
         getProxy().getPluginManager().registerCommand(getInstance(), new friendsmanager());
         getProxy().getPluginManager().registerCommand(getInstance(), new msg());
         getProxy().getPluginManager().registerCommand(getInstance(), new blocksmanager());
-
         BungeeCord.getInstance().getPluginManager().registerListener(this, this);
-
         sql = new sqlmanager();
 
         if (sql.openConnection(getConfig())){
@@ -105,7 +98,6 @@ public class Main extends Plugin implements Listener {
         }
 
         if(getConfig().getBoolean("usingMultipleBungees")) {
-
             if(getConfig().getString("authenticationkey").length() < 3){
                 BungeeCord.getInstance().getLogger().info("[ Friends ] Using the default authentication key for cross-bungee communication. This is not recommended! ");
                 BungeeCord.getInstance().getLogger().info("[ Friends ] Change this value to a string of more than 3 characters in your config to increase security. ");
@@ -114,7 +106,6 @@ public class Main extends Plugin implements Listener {
                 pluginAuthenticationString = getConfig().getString("authenticationkey").replace("/", "");
                 BungeeCord.getInstance().getLogger().info("[ Friends ] Using custom authentication key. ");
             }
-
             try {
                 ioSock = new ServerSocket(getConfig().getInt("communication_port"));
             } catch (IOException e) {
@@ -126,17 +117,13 @@ public class Main extends Plugin implements Listener {
                 try {
 
                     String[] uri = s.split(":");
-
                     InetSocketAddress sock = new InetSocketAddress(uri[0], Integer.parseInt(uri[1]));
-
                     InetSocketAddress self = new InetSocketAddress(((ListenerInfo) getProxy().getConfig().getListeners().toArray()[0]).getHost().getAddress(), getConfig().getInt("communication_port"));
-
                     if (self != sock) {
                         otherServers.add(sock);
                     } else {
                         getProxy().getLogger().info("Note: Self Comm IP/Port is " + sock.getHostName() + ":" + sock.getPort());
                     }
-
                 } catch (ArrayIndexOutOfBoundsException e) {
                     getProxy().getLogger().warning("WARNING: Server " + s + " is an invalid IP/Port! ");
                     return;
@@ -144,11 +131,9 @@ public class Main extends Plugin implements Listener {
                     getProxy().getLogger().warning("WARNING: Server " + s + " has an invalid port! ");
                     return;
                 }
-
             }
 
             BungeeCord.getInstance().getScheduler().runAsync(this, new iolistener());
-
             BungeeCord.getInstance().getScheduler().schedule(this, new Runnable() {
                 @Override
                 public void run() {
@@ -158,7 +143,6 @@ public class Main extends Plugin implements Listener {
                     connectionsInLast5minutes = 0;
                 }
             }, 5, 5, TimeUnit.MINUTES);
-
         } else {
             BungeeCord.getInstance().getLogger().info("[ Friends ] Not using multiple Bungee instance communication. If you want to enable this, adjust the config accordingly. ");
         }
@@ -179,7 +163,6 @@ public class Main extends Plugin implements Listener {
     public void onJoin(PostLoginEvent evt){
         sql.submitQuery("INSERT IGNORE INTO `players`(`username`, `uuid`) VALUES ('"+evt.getPlayer().getName()+"','"+evt.getPlayer().getUUID()+"')");
         sql.submitQuery("UPDATE `players` SET `username` = '"+evt.getPlayer().getName()+"' WHERE `uuid` = '"+evt.getPlayer().getUUID()+"';");
-
         for(ProxiedPlayer p : BungeeCord.getInstance().getPlayers()){
             try {
                 if(sql.getFromDB("SELECT * FROM `relationships` WHERE `primaryuser` LIKE '"+p.getUUID()+"' AND `secondaryuser` LIKE '"+evt.getPlayer().getUUID()+"'").next()){
@@ -204,15 +187,12 @@ public class Main extends Plugin implements Listener {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
                 ArrayList<Integer> keysToRemove = new ArrayList<>();
-
                 for(int i : friendJoinTemp.keySet()){
                     if(friendJoinTemp.get(i).playerWhoJoined.equals(plName)){
                         keysToRemove.add(i);
                     }
                 }
-
                 for(int i : keysToRemove){
                     friendJoinTemp.remove(i);
                 }
@@ -235,11 +215,8 @@ public class Main extends Plugin implements Listener {
                 e.printStackTrace();
             }
         }
-
         ioutils.sendToOtherBungeeServers(iostrings.encodedIOplayerLeaveMessage(evt.getPlayer().getName()));
-
         final String plName = evt.getPlayer().getName();
-
         BungeeCord.getInstance().getScheduler().runAsync(this, new Runnable() {
             @Override
             public void run() {
@@ -248,19 +225,15 @@ public class Main extends Plugin implements Listener {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-
                 ArrayList<Integer> keysToRemove = new ArrayList<>();
-
                 for(int i : friendJoinTemp.keySet()){
                     if(friendLeaveTemp.get(i).playerWhoDCd.equals(plName)){
                         keysToRemove.add(i);
                     }
                 }
-
                 for(int i : keysToRemove){
                     friendLeaveTemp.remove(i);
                 }
-
             }
         });
     }

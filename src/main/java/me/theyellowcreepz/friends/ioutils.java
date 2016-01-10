@@ -22,7 +22,6 @@ public class ioutils {
     public static void sendToOtherBungeeServers(final String data){
 
         if(!Main.getConfig().getBoolean("usingMultipleBungees")) return;
-
         BungeeCord.getInstance().getScheduler().runAsync(Main.getInstance(), new Runnable(){
 
             @Override
@@ -42,7 +41,6 @@ public class ioutils {
                         e1.printStackTrace();
                     }
                 }
-
             }
         });
 
