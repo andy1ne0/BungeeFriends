@@ -1,4 +1,4 @@
-package me.theyellowcreepz.friends;
+package me.andy1ne0.friends;
 
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 
@@ -13,40 +13,40 @@ import java.util.Random;
  * this plugin, unless express permission
  * is given.
  */
-public class iostrings {
+public class IOStringsr {
 
     public static String encodedIOMessage(String playerName, ProxiedPlayer sender, String msg){
         Random rand = new Random();
         String convMSG = msg.replace("/", "");
-        return (Main.pluginAuthenticationString+"/msg/"+playerName+"/"+sender.getName()+"/"+rand.nextInt(99999999)+"/"+convMSG+"/"+sender.getServer().getInfo().getName());
+        return (Friends.pluginAuthenticationString+"/msg/"+playerName+"/"+sender.getName()+"/"+rand.nextInt(99999999)+"/"+convMSG+"/"+sender.getServer().getInfo().getName());
     }
 
     public static String encodedIOfriendMessage(String requester, String requestee){
-        return (Main.pluginAuthenticationString+"/friendrequest/"+requester+"/"+requestee);
+        return (Friends.pluginAuthenticationString+"/friendrequest/"+requester+"/"+requestee);
     }
 
     public static String encodedIOplayerJoinMessage(String joined){
-        return (Main.pluginAuthenticationString+"/playerjoin/"+joined);
+        return (Friends.pluginAuthenticationString+"/playerjoin/"+joined);
     }
 
     public static String encodedIOplayerLeaveMessage(String disconnected){
-        return (Main.pluginAuthenticationString+"/playerleave/"+disconnected);
+        return (Friends.pluginAuthenticationString+"/playerleave/"+disconnected);
     }
 
     public static String encodedIOlocatePlayerMessage(String playerToFind, String CommandSenderUsername){
-        return (Main.pluginAuthenticationString+"/locate/"+playerToFind+"/"+new Random().nextInt(9999999)+"/"+CommandSenderUsername);
+        return (Friends.pluginAuthenticationString+"/locate/"+playerToFind+"/"+new Random().nextInt(9999999)+"/"+CommandSenderUsername);
     }
 
     public static String encodedIOplayerFoundMessage(ProxiedPlayer playerWhoWasFound, int messageID, String playerWhoWasSearching){
-        return (Main.pluginAuthenticationString+"/foundplayer/"+playerWhoWasFound.getName()+"/"+messageID+"/"+playerWhoWasSearching+"/"+playerWhoWasFound.getServer().getInfo().getName());
+        return (Friends.pluginAuthenticationString+"/foundplayer/"+playerWhoWasFound.getName()+"/"+messageID+"/"+playerWhoWasSearching+"/"+playerWhoWasFound.getServer().getInfo().getName());
     }
 
     public static String encodedReceivedMessage(int i){
-        return (Main.pluginAuthenticationString+"/receivedmsg/"+i);
+        return (Friends.pluginAuthenticationString+"/receivedmsg/"+i);
     }
 
     public static String encodedIOfriendReqAcceptedMessage(String requestSender, String requestReceiver){
-        return (Main.pluginAuthenticationString+"/requestaccept/"+requestSender+"/"+requestReceiver);
+        return (Friends.pluginAuthenticationString+"/requestaccept/"+requestSender+"/"+requestReceiver);
     }
 
 }

@@ -1,4 +1,4 @@
-package me.theyellowcreepz.friends;
+package me.andy1ne0.friends;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
@@ -18,9 +18,9 @@ import java.util.ArrayList;
  * this plugin, unless express permission
  * is given.
  */
-public class blocksmanager extends Command {
+public class BlockManagerr extends Command {
 
-    public blocksmanager(){
+    public BlockManagerr(){
         super("blocks");
     }
 
@@ -60,26 +60,26 @@ public class blocksmanager extends Command {
             case "list":
                 //<editor-fold desc="list-internals">
                 try {
-                    ResultSet getPlayers = Main.sql.getFromDB("SELECT * FROM `blocks` WHERE `blocker` LIKE '" + ((ProxiedPlayer) commandSender).getUUID() + "'");
+                    ResultSet getPlayers = Friends.sql.getFromDB("SELECT * FROM `blocks` WHERE `blocker` LIKE '" + ((ProxiedPlayer) commandSender).getUUID() + "'");
 
                     int blockcount = 0;
                     ArrayList<String> blocks = new ArrayList<>();
 
                     while (getPlayers.next()){
                         blockcount++;
-                        ResultSet getPlayerName = Main.sql.getFromDB("SELECT * FROM `players` WHERE `uuid` LIKE '"+getPlayers.getString("blockee")+"'");
+                        ResultSet getPlayerName = Friends.sql.getFromDB("SELECT * FROM `players` WHERE `uuid` LIKE '"+getPlayers.getString("blockee")+"'");
                         getPlayerName.next();
                         blocks.add(getPlayerName.getString("username"));
                     }
 
                     if(blockcount == 0){
-                        commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("You don't have anyone blocked! "));
-                        commandSender.sendMessage(me.theyellowcreepz.friends.strings.subInfoMSG("Use /blocks add to block people. "));
+                        commandSender.sendMessage(StringStandards.errorMessage("You don't have anyone blocked! "));
+                        commandSender.sendMessage(StringStandards.subInfoMSG("Use /blocks add to block people. "));
                         return;
                     }
 
                     commandSender.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"╔══════════════════════════════");
-                    commandSender.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"║ "+me.theyellowcreepz.friends.strings.informationMessage("You have "+ChatColor.GOLD+blockcount+ChatColor.AQUA+" blocked players: "));
+                    commandSender.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"║ "+ StringStandards.informationMessage("You have "+ChatColor.GOLD+blockcount+ChatColor.AQUA+" blocked players: "));
                     for(String s : blocks){
                         commandSender.sendMessage(ChatColor.DARK_RED+""+ChatColor.BOLD+"║ "+ChatColor.GOLD+"➤ "+ChatColor.AQUA+s);
                     }
@@ -96,11 +96,11 @@ public class blocksmanager extends Command {
                 //<editor-fold desc="add-internals">
 
                 if(strings.length == 1){
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("Please specify a player to block! "));
+                    commandSender.sendMessage(StringStandards.errorMessage("Please specify a player to block! "));
                     return;
                 }
                 if(strings.length >= 3){
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("Too many arguments! Use /blocks help. "));
+                    commandSender.sendMessage(StringStandards.errorMessage("Too many arguments! Use /blocks help. "));
                     return;
                 } else {
 
@@ -108,28 +108,28 @@ public class blocksmanager extends Command {
                     ResultSet playerExistence = null;
                     String uuid = null;
                     try {
-                        playerExistence = Main.sql.getFromDB("SELECT * FROM `players` WHERE `username` LIKE '" + strings[1] + "'");
+                        playerExistence = Friends.sql.getFromDB("SELECT * FROM `players` WHERE `username` LIKE '" + strings[1] + "'");
                         if (playerExistence.next()) {
                             uuid = playerExistence.getString("uuid");
                             if (uuid.length() <= 2) {
-                                commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("That player doesn't exist! "));
+                                commandSender.sendMessage(StringStandards.errorMessage("That player doesn't exist! "));
                                 return;
                             }
                         } else {
-                            commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("That player doesn't exist! "));
+                            commandSender.sendMessage(StringStandards.errorMessage("That player doesn't exist! "));
                             return;
                         }
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
 
-                    Main.sql.submitQuery("DELETE FROM `relationships` WHERE `relationships`.`primaryuser` = '" + ((ProxiedPlayer) commandSender).getUUID() + "' AND `relationships`.`secondaryuser` = '" + uuid + "'");
-                    Main.sql.submitQuery("DELETE FROM `relationships` WHERE `relationships`.`primaryuser` = '" + uuid + "' AND `relationships`.`secondaryuser` = '" + ((ProxiedPlayer) commandSender).getUUID() + "'");
+                    Friends.sql.submitQuery("DELETE FROM `relationships` WHERE `relationships`.`primaryuser` = '" + ((ProxiedPlayer) commandSender).getUUID() + "' AND `relationships`.`secondaryuser` = '" + uuid + "'");
+                    Friends.sql.submitQuery("DELETE FROM `relationships` WHERE `relationships`.`primaryuser` = '" + uuid + "' AND `relationships`.`secondaryuser` = '" + ((ProxiedPlayer) commandSender).getUUID() + "'");
                     //</editor-fold>
 
-                    Main.sql.submitQuery("INSERT INTO `blocks` (`blocker`, `blockee`) VALUES ('" + ((ProxiedPlayer) commandSender).getUUID() + "', '" + uuid + "');");
+                    Friends.sql.submitQuery("INSERT INTO `blocks` (`blocker`, `blockee`) VALUES ('" + ((ProxiedPlayer) commandSender).getUUID() + "', '" + uuid + "');");
 
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.successMessage("You have successfully blocked " + strings[1] + "!"));
+                    commandSender.sendMessage(StringStandards.successMessage("You have successfully blocked " + strings[1] + "!"));
                 }
                 //</editor-fold>
                 break;
@@ -138,26 +138,26 @@ public class blocksmanager extends Command {
             case "delete":
                 //<editor-fold desc="delete-internals">
                 if(strings.length == 1){
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("Please specify a player to unblock! "));
+                    commandSender.sendMessage(StringStandards.errorMessage("Please specify a player to unblock! "));
                     return;
                 }
                 if(strings.length >= 3){
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("Too many arguments! Use /blocks help. "));
+                    commandSender.sendMessage(StringStandards.errorMessage("Too many arguments! Use /blocks help. "));
                     return;
                 } else {
                     //<editor-fold desc="Getting UUIDs. ">
                     ResultSet playerExistence = null;
                     String uuid = null;
                     try {
-                        playerExistence = Main.sql.getFromDB("SELECT * FROM `players` WHERE `username` LIKE '" + strings[1] + "'");
+                        playerExistence = Friends.sql.getFromDB("SELECT * FROM `players` WHERE `username` LIKE '" + strings[1] + "'");
                         if (playerExistence.next()) {
                             uuid = playerExistence.getString("uuid");
                             if (uuid.length() <= 2) {
-                                commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("That player doesn't exist! "));
+                                commandSender.sendMessage(StringStandards.errorMessage("That player doesn't exist! "));
                                 return;
                             }
                         } else {
-                            commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("That player doesn't exist! "));
+                            commandSender.sendMessage(StringStandards.errorMessage("That player doesn't exist! "));
                             return;
                         }
                     } catch (SQLException e) {
@@ -166,8 +166,8 @@ public class blocksmanager extends Command {
 
                     //</editor-fold>
 
-                    Main.sql.submitQuery("DELETE FROM `blocks` WHERE `blocker` = '" + ((ProxiedPlayer) commandSender).getUUID() + "' AND `blockee` = '" + uuid + "'");
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.successMessage("You have successfully unblocked that player! "));
+                    Friends.sql.submitQuery("DELETE FROM `blocks` WHERE `blocker` = '" + ((ProxiedPlayer) commandSender).getUUID() + "' AND `blockee` = '" + uuid + "'");
+                    commandSender.sendMessage(StringStandards.successMessage("You have successfully unblocked that player! "));
                 }
                 //</editor-fold>
                 break;
@@ -175,26 +175,26 @@ public class blocksmanager extends Command {
             case "remove":
                 //<editor-fold desc="remove-internals">
                 if(strings.length == 1){
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("Please specify a player to unblock! "));
+                    commandSender.sendMessage(StringStandards.errorMessage("Please specify a player to unblock! "));
                     return;
                 }
                 if(strings.length >= 3){
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("Too many arguments! Use /blocks help. "));
+                    commandSender.sendMessage(StringStandards.errorMessage("Too many arguments! Use /blocks help. "));
                     return;
                 } else {
                     //<editor-fold desc="Getting UUIDs. ">
                     ResultSet playerExistence = null;
                     String uuid = null;
                     try {
-                        playerExistence = Main.sql.getFromDB("SELECT * FROM `players` WHERE `username` LIKE '" + strings[1] + "'");
+                        playerExistence = Friends.sql.getFromDB("SELECT * FROM `players` WHERE `username` LIKE '" + strings[1] + "'");
                         if (playerExistence.next()) {
                             uuid = playerExistence.getString("uuid");
                             if (uuid.length() <= 2) {
-                                commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("That player doesn't exist! "));
+                                commandSender.sendMessage(StringStandards.errorMessage("That player doesn't exist! "));
                                 return;
                             }
                         } else {
-                            commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("That player doesn't exist! "));
+                            commandSender.sendMessage(StringStandards.errorMessage("That player doesn't exist! "));
                             return;
                         }
                     } catch (SQLException e) {
@@ -203,8 +203,8 @@ public class blocksmanager extends Command {
 
                     //</editor-fold>
 
-                    Main.sql.submitQuery("DELETE FROM `blocks` WHERE `blocker` = '" + ((ProxiedPlayer) commandSender).getUUID() + "' AND `blockee` = '" + uuid + "'");
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.successMessage("You have successfully unblocked that player! "));
+                    Friends.sql.submitQuery("DELETE FROM `blocks` WHERE `blocker` = '" + ((ProxiedPlayer) commandSender).getUUID() + "' AND `blockee` = '" + uuid + "'");
+                    commandSender.sendMessage(StringStandards.successMessage("You have successfully unblocked that player! "));
                 }
                 //</editor-fold>
                 break;
@@ -212,26 +212,26 @@ public class blocksmanager extends Command {
             case "unblock":
                 //<editor-fold desc="unblock-internals">
                 if(strings.length == 1){
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("Please specify a player to unblock! "));
+                    commandSender.sendMessage(StringStandards.errorMessage("Please specify a player to unblock! "));
                     return;
                 }
                 if(strings.length >= 3){
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("Too many arguments! Use /blocks help. "));
+                    commandSender.sendMessage(StringStandards.errorMessage("Too many arguments! Use /blocks help. "));
                     return;
                 } else {
                     //<editor-fold desc="Getting UUIDs. ">
                     ResultSet playerExistence = null;
                     String uuid = null;
                     try {
-                        playerExistence = Main.sql.getFromDB("SELECT * FROM `players` WHERE `username` LIKE '" + strings[1] + "'");
+                        playerExistence = Friends.sql.getFromDB("SELECT * FROM `players` WHERE `username` LIKE '" + strings[1] + "'");
                         if (playerExistence.next()) {
                             uuid = playerExistence.getString("uuid");
                             if (uuid.length() <= 2) {
-                                commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("That player doesn't exist! "));
+                                commandSender.sendMessage(StringStandards.errorMessage("That player doesn't exist! "));
                                 return;
                             }
                         } else {
-                            commandSender.sendMessage(me.theyellowcreepz.friends.strings.errorMessage("That player doesn't exist! "));
+                            commandSender.sendMessage(StringStandards.errorMessage("That player doesn't exist! "));
                             return;
                         }
                     } catch (SQLException e) {
@@ -240,8 +240,8 @@ public class blocksmanager extends Command {
 
                     //</editor-fold>
 
-                    Main.sql.submitQuery("DELETE FROM `blocks` WHERE `blocker` = '" + ((ProxiedPlayer) commandSender).getUUID() + "' AND `blockee` = '" + uuid + "'");
-                    commandSender.sendMessage(me.theyellowcreepz.friends.strings.successMessage("You have successfully unblocked that player! "));
+                    Friends.sql.submitQuery("DELETE FROM `blocks` WHERE `blocker` = '" + ((ProxiedPlayer) commandSender).getUUID() + "' AND `blockee` = '" + uuid + "'");
+                    commandSender.sendMessage(StringStandards.successMessage("You have successfully unblocked that player! "));
                 }
                 //</editor-fold>
                 break;

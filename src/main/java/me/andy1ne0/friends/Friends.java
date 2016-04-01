@@ -1,4 +1,4 @@
-package me.theyellowcreepz.friends;
+package me.andy1ne0.friends;
 
 import net.md_5.bungee.BungeeCord;
 import net.md_5.bungee.api.config.ListenerInfo;
@@ -30,19 +30,19 @@ import java.util.concurrent.TimeUnit;
  * this plugin, unless express permission
  * is given.
  */
-public class Main extends Plugin implements Listener {
+public class Friends extends Plugin implements Listener {
 
     public static HashMap<Integer, String> messageIDsEncoded = new HashMap<>();
     public static HashMap<Integer, String> locatePlayerEncoded = new HashMap<>();
-    public static HashMap<Integer, friendJoinObj> friendJoinTemp = new HashMap<>();
-    public static HashMap<Integer, friendLeaveObj> friendLeaveTemp = new HashMap<>();
+    public static HashMap<Integer, FriendJoinObjectr> friendJoinTemp = new HashMap<>();
+    public static HashMap<Integer, FriendLeaveObjectr> friendLeaveTemp = new HashMap<>();
     File file;
     private static Configuration config;
     private static Plugin Main;
     public static ServerSocket ioSock;
     public static ArrayList<InetSocketAddress> otherServers = new ArrayList<>();
     public static String pluginAuthenticationString = "27591Thsefinaa6786785fsefguysgfhkshfbelruh";
-    public static sqlmanager sql = null;
+    public static SqlManagerr sql = null;
     public static int connectionsInLast5minutes = 0;
     public static int outgoingconnectionsInLast5minutes = 0;
 
@@ -83,11 +83,11 @@ public class Main extends Plugin implements Listener {
             return;
         }
 
-        getProxy().getPluginManager().registerCommand(getInstance(), new friendsmanager());
-        getProxy().getPluginManager().registerCommand(getInstance(), new msg());
-        getProxy().getPluginManager().registerCommand(getInstance(), new blocksmanager());
+        getProxy().getPluginManager().registerCommand(getInstance(), new FriendsCommand());
+        getProxy().getPluginManager().registerCommand(getInstance(), new MsgCommand());
+        getProxy().getPluginManager().registerCommand(getInstance(), new BlockManagerr());
         BungeeCord.getInstance().getPluginManager().registerListener(this, this);
-        sql = new sqlmanager();
+        sql = new SqlManagerr();
 
         if (sql.openConnection(getConfig())){
             BungeeCord.getInstance().getLogger().info("[ Friends ] Connection to database established! ");
@@ -133,7 +133,7 @@ public class Main extends Plugin implements Listener {
                 }
             }
 
-            BungeeCord.getInstance().getScheduler().runAsync(this, new iolistener());
+            BungeeCord.getInstance().getScheduler().runAsync(this, new IOListenerr());
             BungeeCord.getInstance().getScheduler().schedule(this, new Runnable() {
                 @Override
                 public void run() {
@@ -166,8 +166,8 @@ public class Main extends Plugin implements Listener {
         for(ProxiedPlayer p : BungeeCord.getInstance().getPlayers()){
             try {
                 if(sql.getFromDB("SELECT * FROM `relationships` WHERE `primaryuser` LIKE '"+p.getUUID()+"' AND `secondaryuser` LIKE '"+evt.getPlayer().getUUID()+"'").next()){
-                    p.sendMessage(me.theyellowcreepz.friends.strings.friendMessage("Your friend "+evt.getPlayer().getName()+" joined! "));
-                    friendJoinObj frand = new friendJoinObj(evt.getPlayer().getName(), p.getName());
+                    p.sendMessage(StringStandards.friendMessage("Your friend "+evt.getPlayer().getName()+" joined! "));
+                    FriendJoinObjectr frand = new FriendJoinObjectr(evt.getPlayer().getName(), p.getName());
                     friendJoinTemp.put(frand.getID(), frand);
                 }
             } catch (SQLException e) {
@@ -175,7 +175,7 @@ public class Main extends Plugin implements Listener {
             }
         }
 
-        ioutils.sendToOtherBungeeServers(iostrings.encodedIOplayerJoinMessage(evt.getPlayer().getName()));
+        IOUtilsr.sendToOtherBungeeServers(IOStringsr.encodedIOplayerJoinMessage(evt.getPlayer().getName()));
 
         final String plName = evt.getPlayer().getName();
 
@@ -207,15 +207,15 @@ public class Main extends Plugin implements Listener {
         for(ProxiedPlayer p : BungeeCord.getInstance().getPlayers()){
             try {
                 if(sql.getFromDB("SELECT * FROM `relationships` WHERE `primaryuser` LIKE '"+p.getUUID()+"' AND `secondaryuser` LIKE '"+evt.getPlayer().getUUID()+"'").next()){
-                    p.sendMessage(me.theyellowcreepz.friends.strings.friendMessage("Your friend "+evt.getPlayer().getName()+" disconnected! "));
-                    friendLeaveObj frand = new friendLeaveObj(evt.getPlayer().getName(), p.getName());
+                    p.sendMessage(StringStandards.friendMessage("Your friend "+evt.getPlayer().getName()+" disconnected! "));
+                    FriendLeaveObjectr frand = new FriendLeaveObjectr(evt.getPlayer().getName(), p.getName());
                     friendLeaveTemp.put(frand.getID(), frand);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        ioutils.sendToOtherBungeeServers(iostrings.encodedIOplayerLeaveMessage(evt.getPlayer().getName()));
+        IOUtilsr.sendToOtherBungeeServers(IOStringsr.encodedIOplayerLeaveMessage(evt.getPlayer().getName()));
         final String plName = evt.getPlayer().getName();
         BungeeCord.getInstance().getScheduler().runAsync(this, new Runnable() {
             @Override

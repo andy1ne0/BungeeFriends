@@ -1,4 +1,4 @@
-package me.theyellowcreepz.friends;
+package me.andy1ne0.friends;
 
 import java.util.Random;
 
@@ -11,13 +11,13 @@ import java.util.Random;
  * this plugin, unless express permission
  * is given.
  */
-public class friendJoinObj {
+public class FriendJoinObjectr {
 
     public String playerWhoJoined = null;
     public String playerNotified = null;
     public int ID;
 
-    public friendJoinObj(String playerJoined, String playerNotifd){
+    public FriendJoinObjectr(String playerJoined, String playerNotifd){
         this.playerNotified = playerNotifd;
         this.playerWhoJoined = playerJoined;
         Random rand = new Random();
