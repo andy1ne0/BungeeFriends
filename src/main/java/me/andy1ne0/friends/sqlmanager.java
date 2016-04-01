@@ -14,7 +14,7 @@ import java.sql.*;
  * this plugin, unless express permission
  * is given.
  */
-public class SqlManagerr {
+public class SqlManager {
 
     Connection conn = null;
 

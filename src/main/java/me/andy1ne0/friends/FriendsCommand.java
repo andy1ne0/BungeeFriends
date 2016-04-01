@@ -136,7 +136,7 @@ public class FriendsCommand extends Command {
                                                 if(BungeeCord.getInstance().getPlayer(strings[1]) != null){
                                                     BungeeCord.getInstance().getPlayer(strings[1]).sendMessage(StringStandards.subInfoMSG(commandSender.getName()+" is now friends with you! "));
                                                 } else {
-                                                    IOUtilsr.sendToOtherBungeeServers(IOStringsr.encodedIOfriendReqAcceptedMessage(commandSender.getName(), strings[1]));
+                                                    IOUtils.sendToOtherBungeeServers(IOStrings.encodedIOfriendReqAcceptedMessage(commandSender.getName(), strings[1]));
                                                 }
                                                 return;
                                             } else {
@@ -160,7 +160,7 @@ public class FriendsCommand extends Command {
                                                 if(BungeeCord.getInstance().getPlayer(strings[1]) != null){
                                                     BungeeCord.getInstance().getPlayer(strings[1]).sendMessage(StringStandards.subInfoMSG(commandSender.getName()+" is now friends with you! "));
                                                 } else {
-                                                    IOUtilsr.sendToOtherBungeeServers(IOStringsr.encodedIOfriendReqAcceptedMessage(commandSender.getName(), strings[1]));
+                                                    IOUtils.sendToOtherBungeeServers(IOStrings.encodedIOfriendReqAcceptedMessage(commandSender.getName(), strings[1]));
                                                 }
                                                 return;
                                             } else {
@@ -169,7 +169,7 @@ public class FriendsCommand extends Command {
                                                     BungeeCord.getInstance().getPlayer(strings[1]).sendMessage(StringStandards.successMessage("You received a friend request from "+commandSender.getName()+"!"));
                                                     BungeeCord.getInstance().getPlayer(strings[1]).sendMessage(StringStandards.subInfoMSG("Type /friends add "+commandSender.getName()+" to accept the request! "));
                                                 } else {
-                                                    IOUtilsr.sendToOtherBungeeServers(IOStringsr.encodedIOfriendMessage(commandSender.getName(), strings[1]));
+                                                    IOUtils.sendToOtherBungeeServers(IOStrings.encodedIOfriendMessage(commandSender.getName(), strings[1]));
                                                 }
                                                 return;
                                             }
@@ -298,13 +298,13 @@ public class FriendsCommand extends Command {
 
                                     } else {
 
-                                        String encodedLocMessage = IOStringsr.encodedIOlocatePlayerMessage(strings[1], commandSender.getName());
+                                        String encodedLocMessage = IOStrings.encodedIOlocatePlayerMessage(strings[1], commandSender.getName());
                                         final int locateID = Integer.parseInt(encodedLocMessage.split("/")[3]);
                                         Friends.locatePlayerEncoded.put(locateID, commandSender.getName());
 
                                         final String[] stringsFinal = strings;
 
-                                        IOUtilsr.sendToOtherBungeeServers(encodedLocMessage);
+                                        IOUtils.sendToOtherBungeeServers(encodedLocMessage);
 
                                         BungeeCord.getInstance().getScheduler().runAsync(Friends.getInstance(), new Runnable() {
                                             @Override

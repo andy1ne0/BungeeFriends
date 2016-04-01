@@ -34,15 +34,15 @@ public class Friends extends Plugin implements Listener {
 
     public static HashMap<Integer, String> messageIDsEncoded = new HashMap<>();
     public static HashMap<Integer, String> locatePlayerEncoded = new HashMap<>();
-    public static HashMap<Integer, FriendJoinObjectr> friendJoinTemp = new HashMap<>();
-    public static HashMap<Integer, FriendLeaveObjectr> friendLeaveTemp = new HashMap<>();
+    public static HashMap<Integer, FriendJoinObject> friendJoinTemp = new HashMap<>();
+    public static HashMap<Integer, FriendLeaveObject> friendLeaveTemp = new HashMap<>();
     File file;
     private static Configuration config;
     private static Plugin Main;
     public static ServerSocket ioSock;
     public static ArrayList<InetSocketAddress> otherServers = new ArrayList<>();
     public static String pluginAuthenticationString = "27591Thsefinaa6786785fsefguysgfhkshfbelruh";
-    public static SqlManagerr sql = null;
+    public static SqlManager sql = null;
     public static int connectionsInLast5minutes = 0;
     public static int outgoingconnectionsInLast5minutes = 0;
 
@@ -85,9 +85,9 @@ public class Friends extends Plugin implements Listener {
 
         getProxy().getPluginManager().registerCommand(getInstance(), new FriendsCommand());
         getProxy().getPluginManager().registerCommand(getInstance(), new MsgCommand());
-        getProxy().getPluginManager().registerCommand(getInstance(), new BlockManagerr());
+        getProxy().getPluginManager().registerCommand(getInstance(), new BlockManager());
         BungeeCord.getInstance().getPluginManager().registerListener(this, this);
-        sql = new SqlManagerr();
+        sql = new SqlManager();
 
         if (sql.openConnection(getConfig())){
             BungeeCord.getInstance().getLogger().info("[ Friends ] Connection to database established! ");
@@ -133,7 +133,7 @@ public class Friends extends Plugin implements Listener {
                 }
             }
 
-            BungeeCord.getInstance().getScheduler().runAsync(this, new IOListenerr());
+            BungeeCord.getInstance().getScheduler().runAsync(this, new IOListener());
             BungeeCord.getInstance().getScheduler().schedule(this, new Runnable() {
                 @Override
                 public void run() {
@@ -167,7 +167,7 @@ public class Friends extends Plugin implements Listener {
             try {
                 if(sql.getFromDB("SELECT * FROM `relationships` WHERE `primaryuser` LIKE '"+p.getUUID()+"' AND `secondaryuser` LIKE '"+evt.getPlayer().getUUID()+"'").next()){
                     p.sendMessage(StringStandards.friendMessage("Your friend "+evt.getPlayer().getName()+" joined! "));
-                    FriendJoinObjectr frand = new FriendJoinObjectr(evt.getPlayer().getName(), p.getName());
+                    FriendJoinObject frand = new FriendJoinObject(evt.getPlayer().getName(), p.getName());
                     friendJoinTemp.put(frand.getID(), frand);
                 }
             } catch (SQLException e) {
@@ -175,7 +175,7 @@ public class Friends extends Plugin implements Listener {
             }
         }
 
-        IOUtilsr.sendToOtherBungeeServers(IOStringsr.encodedIOplayerJoinMessage(evt.getPlayer().getName()));
+        IOUtils.sendToOtherBungeeServers(IOStrings.encodedIOplayerJoinMessage(evt.getPlayer().getName()));
 
         final String plName = evt.getPlayer().getName();
 
@@ -208,14 +208,14 @@ public class Friends extends Plugin implements Listener {
             try {
                 if(sql.getFromDB("SELECT * FROM `relationships` WHERE `primaryuser` LIKE '"+p.getUUID()+"' AND `secondaryuser` LIKE '"+evt.getPlayer().getUUID()+"'").next()){
                     p.sendMessage(StringStandards.friendMessage("Your friend "+evt.getPlayer().getName()+" disconnected! "));
-                    FriendLeaveObjectr frand = new FriendLeaveObjectr(evt.getPlayer().getName(), p.getName());
+                    FriendLeaveObject frand = new FriendLeaveObject(evt.getPlayer().getName(), p.getName());
                     friendLeaveTemp.put(frand.getID(), frand);
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        IOUtilsr.sendToOtherBungeeServers(IOStringsr.encodedIOplayerLeaveMessage(evt.getPlayer().getName()));
+        IOUtils.sendToOtherBungeeServers(IOStrings.encodedIOplayerLeaveMessage(evt.getPlayer().getName()));
         final String plName = evt.getPlayer().getName();
         BungeeCord.getInstance().getScheduler().runAsync(this, new Runnable() {
             @Override

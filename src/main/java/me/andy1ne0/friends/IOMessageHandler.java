@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * this plugin, unless express permission
  * is given.
  */
-public class IOMessageHandlerr {
+public class IOMessageHandler {
 
     public static void handleMessage(String s){
 
@@ -30,7 +30,7 @@ public class IOMessageHandlerr {
 
                         BungeeCord.getInstance().getPlayer(splitMessage[2]).sendMessage(StringStandards.messageFromPlayer(splitMessage[3], splitMessage[5]));
 
-                        IOUtilsr.sendToOtherBungeeServers(IOStringsr.encodedReceivedMessage(Integer.parseInt(splitMessage[4])));
+                        IOUtils.sendToOtherBungeeServers(IOStrings.encodedReceivedMessage(Integer.parseInt(splitMessage[4])));
                     } else {
                         try {
 
@@ -52,7 +52,7 @@ public class IOMessageHandlerr {
 
                                 BungeeCord.getInstance().getPlayer(splitMessage[2]).sendMessage(StringStandards.messageFromPlayer(splitMessage[3], splitMessage[5]));
 
-                                IOUtilsr.sendToOtherBungeeServers(IOStringsr.encodedReceivedMessage(Integer.parseInt(splitMessage[4])));
+                                IOUtils.sendToOtherBungeeServers(IOStrings.encodedReceivedMessage(Integer.parseInt(splitMessage[4])));
                             }
                         } catch (SQLException e) {
                             e.printStackTrace();
@@ -111,7 +111,7 @@ public class IOMessageHandlerr {
 
                             if(!isMsgSentAlready){
                                 pl.sendMessage(StringStandards.friendMessage("Your friend "+splitMessage[2]+" joined! "));
-                                FriendJoinObjectr tempFriend = new FriendJoinObjectr(splitMessage[2], pl.getName());
+                                FriendJoinObject tempFriend = new FriendJoinObject(splitMessage[2], pl.getName());
                                 Friends.friendJoinTemp.put(tempFriend.getID(), tempFriend);
                             }
 
@@ -173,7 +173,7 @@ public class IOMessageHandlerr {
 
                             if(!isMsgSentAlready){
                                 pl.sendMessage(StringStandards.friendMessage("Your friend "+splitMessage[2]+" disconnected! "));
-                                FriendLeaveObjectr tempFriend = new FriendLeaveObjectr(splitMessage[2], pl.getName());
+                                FriendLeaveObject tempFriend = new FriendLeaveObject(splitMessage[2], pl.getName());
                                 Friends.friendLeaveTemp.put(tempFriend.getID(), tempFriend);
                             }
 
@@ -212,7 +212,7 @@ public class IOMessageHandlerr {
             case "locate":
                 //<editor-fold desc="locate-internals">
                 if(BungeeCord.getInstance().getPlayer(splitMessage[2]) != null) {
-                    IOUtilsr.sendToOtherBungeeServers(IOStringsr.encodedIOplayerFoundMessage(BungeeCord.getInstance().getPlayer(splitMessage[2]), Integer.parseInt(splitMessage[3]), splitMessage[4]));
+                    IOUtils.sendToOtherBungeeServers(IOStrings.encodedIOplayerFoundMessage(BungeeCord.getInstance().getPlayer(splitMessage[2]), Integer.parseInt(splitMessage[3]), splitMessage[4]));
                 }
                 //</editor-fold>
                 break;

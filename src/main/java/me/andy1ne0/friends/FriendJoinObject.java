@@ -11,13 +11,13 @@ import java.util.Random;
  * this plugin, unless express permission
  * is given.
  */
-public class FriendJoinObjectr {
+public class FriendJoinObject {
 
     public String playerWhoJoined = null;
     public String playerNotified = null;
     public int ID;
 
-    public FriendJoinObjectr(String playerJoined, String playerNotifd){
+    public FriendJoinObject(String playerJoined, String playerNotifd){
         this.playerNotified = playerNotifd;
         this.playerWhoJoined = playerJoined;
         Random rand = new Random();

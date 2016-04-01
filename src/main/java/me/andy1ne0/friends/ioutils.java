@@ -17,7 +17,7 @@ import java.net.SocketException;
  * this plugin, unless express permission
  * is given.
  */
-public class IOUtilsr {
+public class IOUtils {
 
     public static void sendToOtherBungeeServers(final String data){
 

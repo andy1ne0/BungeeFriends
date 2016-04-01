@@ -15,7 +15,7 @@ import java.net.Socket;
  * this plugin, unless express permission
  * is given.
  */
-public class IOListenerr implements Runnable {
+public class IOListener implements Runnable {
 
     Socket client;
 
@@ -26,7 +26,7 @@ public class IOListenerr implements Runnable {
                 DataInputStream dis = new DataInputStream(client.getInputStream());
                 String data = dis.readUTF();
                 if (data.contains(Friends.pluginAuthenticationString)) {
-                    IOMessageHandlerr.handleMessage(data);
+                    IOMessageHandler.handleMessage(data);
                     Friends.connectionsInLast5minutes++;
                 } else {
                     BungeeCord.getInstance().getLogger().warning("IP address " + client.getRemoteSocketAddress() + " attempted a counterfeit plugin message: ");

@@ -129,13 +129,13 @@ public class MsgCommand extends Command {
 
                             } else {
 
-                                String encoded = IOStringsr.encodedIOMessage(strings[0], (ProxiedPlayer)commandSender, msg.toString());
+                                String encoded = IOStrings.encodedIOMessage(strings[0], (ProxiedPlayer)commandSender, msg.toString());
                                 String[] gettingIDp1 = encoded.split("/");
                                 String integerid = gettingIDp1[4];
                                 final int msgID = Integer.parseInt(integerid);
                                 Friends.messageIDsEncoded.put(msgID, encoded);
 
-                                IOUtilsr.sendToOtherBungeeServers(encoded);
+                                IOUtils.sendToOtherBungeeServers(encoded);
 
                                 BungeeCord.getInstance().getScheduler().runAsync(Friends.getInstance(), new Runnable() {
                                     @Override

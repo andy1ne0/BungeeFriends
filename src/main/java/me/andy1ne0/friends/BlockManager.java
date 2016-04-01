@@ -18,9 +18,9 @@ import java.util.ArrayList;
  * this plugin, unless express permission
  * is given.
  */
-public class BlockManagerr extends Command {
+public class BlockManager extends Command {
 
-    public BlockManagerr(){
+    public BlockManager(){
         super("blocks");
     }
 

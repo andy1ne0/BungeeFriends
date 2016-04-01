@@ -13,7 +13,7 @@ import java.util.Random;
  * this plugin, unless express permission
  * is given.
  */
-public class IOStringsr {
+public class IOStrings {
 
     public static String encodedIOMessage(String playerName, ProxiedPlayer sender, String msg){
         Random rand = new Random();
